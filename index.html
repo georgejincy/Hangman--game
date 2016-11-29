@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<!-- Viewport controls how webpage is displayed on mobile device-->
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>JS | Hangman</title>
+
+	<!--Reset CSS file -->
+	<link rel="stylesheet" type="text/css" href="assets/css/reset.css">
+
+	<!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" type="text/css" href="assets/ext/bootstrap/css/bootstrap.css">
+
+    <!--Custom CSS file-->
+	<link rel="stylesheet" type="text/css" href="assets/css/style.css">
+</head>
+<body>
+	<div class = "container">
+		<div class="jumbotron">
+		  <h1>Hangman - Classic</h1>
+		  <div class="well well-lg">
+		  	<p>Guesses remaining: <span id = "guessLeft">...</span></p>
+		  	<p>Word length: <span id = "wordLen">...</span></p>
+		  	<p>Letters guessed: <span id = "lettersGuessed">...</span></p>
+		  	<p>Wins: <span id = "wins">...</span></p>
+		  </div>
+		  <p id="word">Click button to start!</p>
+		  <br>
+		  <button type="button" id="myButton" class="btn btn-primary" autocomplete="off">Play Game</button>
+		</div>
+	</div>
+
+	<!-- JavaScript -->
+    <script src="assets/javascript/game.js"></script>
+</body>
+</html>

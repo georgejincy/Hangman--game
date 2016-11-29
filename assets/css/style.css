@@ -1,0 +1,15 @@
+.container .jumbotron,
+.container-fluid .jumbotron {
+	margin-top: 150px;
+}
+.jumbotron h1,
+.jumbotron .h1 {
+  font-size: 50px;
+}
+#word{
+	font-size: 40px;
+}
+.well p,
+.well-lg p{
+	font-size: 16px;
+}
