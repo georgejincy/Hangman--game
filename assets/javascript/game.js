@@ -19,16 +19,17 @@ words[2] = "iguana"
 
 //global functions
 function randomWordGenerator(){
-	var wordToGuess = words[Math.floor(Math.random() * words.length)];
-	console.log(wordToGuess);
+	var randomWord = words[Math.floor(Math.random() * words.length)];
+	console.log(randomWord);
+	return randomWord;
 }
 
 //randomWordGenerator();
 
-var x = "hello";
+	var wordToGuess= randomWordGenerator();
 	var placeholder = "-";
 	var wordArray = [];
-    var arrayofChars = x.split("");
+    var arrayofChars = wordToGuess.split("");
 
 function setWordToBlanks(){
 	
@@ -74,7 +75,7 @@ function exitGame(){
 	doExit = true;
 }
 
-//while((userTries>0) && (doExit === false)){
+//while((userTries>=0) && (doExit === false)){
 
 		// Captures keyboard input. Depending on the letter pressed it will "call" (execute) different functions.
 		document.onkeyup = function(event) {
@@ -97,5 +98,5 @@ function exitGame(){
 				 lettersGuessed.push(letter);
 				}
 			 updateStats();
-		//}
-}
+		}
+//}
