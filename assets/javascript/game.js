@@ -1,102 +1,156 @@
-//global variables
-var userTries;
-var wordLength;
-var wins;
-var lettersGuessed = [];
+// GLOBAL VARIABLES (Accessible by all functions)
+// ==================================================================================================
+var placeholder = "-";
+var doExit = "false";
 
-// words array contains a list of words for user to guess.If
-// you need to add a new word to the array use .push function
-var words = [];
+//OBJECT
+//===================================================================================================
+var Hangman = {
+	guessesLeft: 0,
+	wins: 0,
+    lettersGuessed: [],
+    arrayOfChar: [],
+    words: ["alabama","alaska","arizona","arkansas","california","colorado","delaware","kansas","iowa","missouri","montana"],
+    wordToBeGuessed: "",
+    wordLength: 0,
+    guessDisplay: "",
+    arrayOfDashes: [],
 
-// Assigning words to the array
-words[0] = "budgie";
-words[1] = "dog";
-words[2] = "iguana"
+    //Updates all variables on the screen
+    updateStats: function(){
+		document.getElementById("guessLeft").innerHTML = this.guessesLeft;
+		document.getElementById("wordLen").innerHTML = this.wordLength;
+		document.getElementById("lettersGuessed").innerHTML = this.lettersGuessed;
+		document.getElementById("wins").innerHTML = this.wins;
+		document.getElementById("word").innerHTML = this.arrayOfDashes.join("  ");
+	},
 
-/*for (var i = words.length - 1; i >= 0; i--) {
-	console.log(words[i]);
-}*/
+    //clear all variables at the beginning of the game
+    //show new word to user with dashes
+    clearVal: function(){
+    	
+    	//arrayOfChar = ["1","2"];
+    	this.wordToBeGuessed = "";
+    	this.guessesLeft = 0;
+    	this.guessDisplay = "";
+    	var dashesArray = [];
+    	var newGuessesArray = [];
+    	//if(lettersGuessed.length != 0){
+    	//this.lettersGuessed.fill("");
+    	this.lettersGuessed = newGuessesArray;
+    	//arrayOfChar.fill("");
+    	//arrayOfDashes.fill("");
+   		//}
 
-//global functions
-function randomWordGenerator(){
-	var randomWord = words[Math.floor(Math.random() * words.length)];
-	console.log(randomWord);
-	return randomWord;
-}
+    	//get random word to be guessed
+    	var ranIndex = randomIndexGenerator(this.words.length);
+    	this.wordToBeGuessed = this.words[ranIndex];
+    	console.log(this.wordToBeGuessed);
 
-//randomWordGenerator();
+    	//split word to be guessed into an array
+    	this.arrayOfChar = this.wordToBeGuessed.split("");
+		console.log(this.arrayOfChar);
+		this.wordLength = this.arrayOfChar.length;
 
-	var wordToGuess= randomWordGenerator();
-	var placeholder = "-";
-	var wordArray = [];
-    var arrayofChars = wordToGuess.split("");
+		//calculate user guesses
+		this.guessesLeft = this.wordLength * 2;
+		//lettersGuessed = new Array(this.guessesLeft).fill(" ");
 
-function setWordToBlanks(){
-	
-    for (var i = 0; i < arrayofChars.length; i++) {
-   		wordArray[i] = placeholder;
-    }
-    console.log(wordArray);
-    document.getElementById("word").innerHTML = wordArray.join("  ");
-    document.getElementById("myButton").innerHTML = "Exit";
-}
+		//Show word to user as blanks
+		for (var i = 0; i < this.wordLength; i++) {
+   			dashesArray[i] = placeholder;
+    	}
+    	this.arrayOfDashes = dashesArray;
 
-function initRoutine(){
-	userTries = arrayofChars.length * 2;
-	wordLength =  arrayofChars.length;
-	wins = 0;
-	lettersGuessed = [];
-}
-function updateStats(){
-	document.getElementById("guessLeft").innerHTML = userTries;
-	document.getElementById("wordLen").innerHTML = wordLength;
-	document.getElementById("lettersGuessed").innerHTML = lettersGuessed;
-	document.getElementById("wins").innerHTML = wins;
-	document.getElementById("word").innerHTML = wordArray.join("  ");
-}
+    	//update all fields to user
+    	this.updateStats();
+    },
 
-/*var Game = {
-        wins: 0,
-        guessesLeft: 0,
-        lettersGuessed: [],
-        currWord: []
-        };*/
-var letter = "";
-
-//displayWordBlanks();
-document.getElementById("myButton").addEventListener("click", setWordToBlanks);
-document.getElementById("myButton").addEventListener("click", exitGame);
-initRoutine();
-updateStats();
-
-var doExit = false;
-
-function exitGame(){
-	doExit = true;
-}
-
-//while((userTries>=0) && (doExit === false)){
-
-		// Captures keyboard input. Depending on the letter pressed it will "call" (execute) different functions.
-		document.onkeyup = function(event) {
-
-			// Captures the key press, converts it to lowercase, and saves it to a variable.
-			 letter = String.fromCharCode(event.keyCode).toLowerCase();
-
-			if(arrayofChars.indexOf(letter) === -1){
-			 	userTries--;
-			 }
-			 else{
-				 for (var i = 0; i< arrayofChars.length; i++) {
-				 	if (arrayofChars[i] === letter) {
-				 		wordArray[i] = letter;
-				 	}
-				 }
-				 wins++;
-			 }
-			 if(lettersGuessed.indexOf(letter) === -1){
-				 lettersGuessed.push(letter);
-				}
-			 updateStats();
+	wordGuessed: function(){
+		console.log("I'm here" + this.arrayOfDashes.indexOf(placeholder));
+		if (this.arrayOfDashes.indexOf(placeholder) === -1) {
+				this.wins++;
+				return true;
+		}else{
+			return false;
 		}
-//}
+	},
+
+	guess: function(ch){
+		console.log("Hi " + ch);
+		for (var i = this.arrayOfChar.length - 1; i >= 0; i--) {
+			console.log(this.arrayOfChar[i]);
+		}
+		console.log(this.arrayOfChar.indexOf(ch));
+		if(this.arrayOfChar.indexOf(ch) === -1){
+			 		this.guessesLeft--;
+			 		console.log(this.guessesLeft);
+		}
+		else{
+				for (var i = 0; i< this.wordLength; i++) {
+				 	if (this.arrayOfChar[i] === ch) {
+				 		this.arrayOfDashes[i] = ch;
+				 	}
+				}
+		}
+
+		//Update the lettersGuessed array
+		this.updLettersGuessed(ch);
+	},
+
+	updLettersGuessed: function(chr){
+		console.log("hello");
+		if(this.lettersGuessed.indexOf(chr) === -1){
+				 this.lettersGuessed.push(chr);
+				 console.log(this.lettersGuessed);
+		}
+	}
+    
+};
+
+// FUNCTIONS (These are bits of code that we will call upon to run when needed)
+// ==================================================================================================
+//Generates a random index using math.random function, for an array length
+function randomIndexGenerator(length){
+	var randomIndex = Math.floor(Math.random() * length);
+	console.log(randomIndex);
+	return randomIndex;
+}
+
+// MAIN PROCESS (THIS IS THE CODE THAT CONTROLS WHAT IS ACTUALLY RUN)
+// ==================================================================================================
+
+//when user presses space bar, initialize the Game screen
+document.addEventListener("keydown", function(event) {
+  console.log(event.which);
+  if (event.which === 32) {
+  	Hangman.clearVal();
+  }
+});
+
+//Plays hangman 
+document.addEventListener("keypress", function(event) {
+      var letter = String.fromCharCode(event.which).toLowerCase();
+      console.log(letter);
+
+      //call method guess() passing the letter pressed as argument
+      Hangman.guess(letter);
+
+      //Update screen
+      Hangman.updateStats();
+
+      //if word has been guessed or guessesLeft is zero, display a 
+      //message and start a new game
+      if (Hangman.guessesLeft <= 0) {
+      	alert("You lose!!. Better luck next time. The word is " + Hangman.wordToBeGuessed);
+      	Hangman.clearVal();
+      }
+      
+      //Check if word has been guessed
+      var isGuessCorrect = Hangman.wordGuessed();
+      if(isGuessCorrect){
+      	alert("Good job!");
+      	Hangman.clearVal();
+      }
+
+});
