@@ -34,8 +34,10 @@ var Hangman = {
     	this.guessesLeft = 0;
     	this.guessDisplay = "";
     	var dashesArray = [];
+    	var newGuessesArray = [];
     	//if(lettersGuessed.length != 0){
-    	//lettersGuessed.fill("");
+    	//this.lettersGuessed.fill("");
+    	this.lettersGuessed = newGuessesArray;
     	//arrayOfChar.fill("");
     	//arrayOfDashes.fill("");
    		//}
@@ -52,7 +54,7 @@ var Hangman = {
 
 		//calculate user guesses
 		this.guessesLeft = this.wordLength * 2;
-		lettersGuessed = new Array(this.guessesLeft).fill(" ");
+		//lettersGuessed = new Array(this.guessesLeft).fill(" ");
 
 		//Show word to user as blanks
 		for (var i = 0; i < this.wordLength; i++) {
@@ -65,10 +67,13 @@ var Hangman = {
     },
 
 	wordGuessed: function(){
-		if (this.arrayOfChar.indexOf(placeholder) === -1) {
+		console.log("I'm here" + this.arrayOfDashes.indexOf(placeholder));
+		if (this.arrayOfDashes.indexOf(placeholder) === -1) {
 				this.wins++;
 				return true;
-			}
+		}else{
+			return false;
+		}
 	},
 
 	guess: function(ch){
@@ -89,11 +94,8 @@ var Hangman = {
 				}
 		}
 
-		console.log("i'm here");
 		//Update the lettersGuessed array
 		this.updLettersGuessed(ch);
-		console.log("end of guess1");
-		return;
 	},
 
 	updLettersGuessed: function(chr){
@@ -132,9 +134,7 @@ document.addEventListener("keypress", function(event) {
       console.log(letter);
 
       //call method guess() passing the letter pressed as argument
-      console.log("Hi");
-      Hangman.guess(letter)();
-      console.log("end of guess2");
+      Hangman.guess(letter);
 
       //Update screen
       Hangman.updateStats();
@@ -142,9 +142,13 @@ document.addEventListener("keypress", function(event) {
       //if word has been guessed or guessesLeft is zero, display a 
       //message and start a new game
       if (Hangman.guessesLeft <= 0) {
-      	alert("You lose!!. Better luck next time. The word is " + Hangman.wordGuessed);
+      	alert("You lose!!. Better luck next time. The word is " + Hangman.wordToBeGuessed);
       	Hangman.clearVal();
-      }else if(wordGuessed){
+      }
+      
+      //Check if word has been guessed
+      var isGuessCorrect = Hangman.wordGuessed();
+      if(isGuessCorrect){
       	alert("Good job!");
       	Hangman.clearVal();
       }
