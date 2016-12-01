@@ -2,6 +2,7 @@
 // ==================================================================================================
 var placeholder = "-";
 var doExit = "false";
+var audio = new Audio("../images/alert.mp3");
 
 //OBJECT
 //===================================================================================================
@@ -22,8 +23,11 @@ var Hangman = {
 		document.getElementById("wordLen").innerHTML = this.wordLength;
 		document.getElementById("lettersGuessed").innerHTML = this.lettersGuessed;
 		document.getElementById("wins").innerHTML = this.wins;
+/*    for(i=0; i<this.arrayOfDashes.length;i++){
+    console.log(this.arrayOfDashes[i]);
+    }*/
 		document.getElementById("word").innerHTML = this.arrayOfDashes.join("  ");
-	},
+	 },
 
     //clear all variables at the beginning of the game
     //show new word to user with dashes
@@ -35,12 +39,7 @@ var Hangman = {
     	this.guessDisplay = "";
     	var dashesArray = [];
     	var newGuessesArray = [];
-    	//if(lettersGuessed.length != 0){
-    	//this.lettersGuessed.fill("");
     	this.lettersGuessed = newGuessesArray;
-    	//arrayOfChar.fill("");
-    	//arrayOfDashes.fill("");
-   		//}
 
     	//get random word to be guessed
     	var ranIndex = randomIndexGenerator(this.words.length);
@@ -49,15 +48,15 @@ var Hangman = {
 
     	//split word to be guessed into an array
     	this.arrayOfChar = this.wordToBeGuessed.split("");
-		console.log(this.arrayOfChar);
-		this.wordLength = this.arrayOfChar.length;
+		  console.log(this.arrayOfChar);
+		  this.wordLength = this.arrayOfChar.length;
 
-		//calculate user guesses
-		this.guessesLeft = this.wordLength * 2;
-		//lettersGuessed = new Array(this.guessesLeft).fill(" ");
+		  //calculate user guesses
+		  this.guessesLeft = this.wordLength * 2;
+		  //lettersGuessed = new Array(this.guessesLeft).fill(" ");
 
-		//Show word to user as blanks
-		for (var i = 0; i < this.wordLength; i++) {
+		  //Show word to user as blanks
+		  for (var i = 0; i < this.wordLength; i++) {
    			dashesArray[i] = placeholder;
     	}
     	this.arrayOfDashes = dashesArray;
@@ -67,9 +66,9 @@ var Hangman = {
     },
 
 	wordGuessed: function(){
-		console.log("I'm here" + this.arrayOfDashes.indexOf(placeholder));
 		if (this.arrayOfDashes.indexOf(placeholder) === -1) {
 				this.wins++;
+        audio.play();
 				return true;
 		}else{
 			return false;
@@ -77,11 +76,6 @@ var Hangman = {
 	},
 
 	guess: function(ch){
-		console.log("Hi " + ch);
-		for (var i = this.arrayOfChar.length - 1; i >= 0; i--) {
-			console.log(this.arrayOfChar[i]);
-		}
-		console.log(this.arrayOfChar.indexOf(ch));
 		if(this.arrayOfChar.indexOf(ch) === -1){
 			 		this.guessesLeft--;
 			 		console.log(this.guessesLeft);
@@ -99,10 +93,8 @@ var Hangman = {
 	},
 
 	updLettersGuessed: function(chr){
-		console.log("hello");
 		if(this.lettersGuessed.indexOf(chr) === -1){
 				 this.lettersGuessed.push(chr);
-				 console.log(this.lettersGuessed);
 		}
 	}
     
@@ -122,7 +114,6 @@ function randomIndexGenerator(length){
 
 //when user presses space bar, initialize the Game screen
 document.addEventListener("keydown", function(event) {
-  console.log(event.which);
   if (event.which === 32) {
   	Hangman.clearVal();
   }
@@ -137,6 +128,8 @@ document.addEventListener("keypress", function(event) {
       Hangman.guess(letter);
 
       //Update screen
+      console.log("hello");
+      console.log(Hangman.arrayOfDashes.toString());
       Hangman.updateStats();
 
       //if word has been guessed or guessesLeft is zero, display a 
@@ -149,7 +142,9 @@ document.addEventListener("keypress", function(event) {
       //Check if word has been guessed
       var isGuessCorrect = Hangman.wordGuessed();
       if(isGuessCorrect){
-      	alert("Good job!");
+        audio.play();
+        //document.getElementById("msg").innerHTML = "Good Job!"
+      	alert("Good job! Try the next one");
       	Hangman.clearVal();
       }
 
